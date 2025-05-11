@@ -1,0 +1,29 @@
+/* JSON */
+#codeInput {
+  padding: 1rem;
+  border-radius: 8px;
+  background: #1e1e1e;
+}
+.code-style {
+  color: white;
+  overflow: visible;
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+.key { color: #9cdcfe; }
+.string { color: #ce9178; }
+.number-type { color: #b5cea8; }
+.boolean { color: #569cd6; }
+.null { color: #dcdcaa; }
+
+/* JS */
+.string   { color: #ce9178; }
+.number-type   { color: #b5cea8; }
+.keyword  { color: #c586c0; }
+.operator { color: #d4d4d4; }
+.brace    { color: #dcdcaa; }
+.bracket  { color: #dcdcaa; }
+.parentheses  { color: #ffd700; }
+.st-name { color: #4fc1ff; } /** Variable name **/
+.function-slice { color: #ccbf84; font-weight: bold; }
+.comment        { color: #6a9955; font-style: italic; }

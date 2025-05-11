@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste Online</title>
+  <link rel="stylesheet" href="./styles/main.css">
+  <link rel="stylesheet" href="./styles/syntax.css">
+</head>
+
+<body>
+
+  <h1 id="question"></h1>
+
+  <input type="file" id="inputFile" />
+  <br>
+  <br>
+
+  <code class="code-style">
+    <div id="codeInput" contentEditable='true'></div>
+  </code>
+
+  <h3 id="score"></h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Saida</th>
+        <th>Esperado</th>
+        <th>Tempo</th>
+        <th>Situação</th>
+      </tr>
+    </thead>
+    <tbody id="testRunning"></tbody>
+  </table>
+
+  <button id="checkCode">Testar</button>
+  <button id="goNextQuestion">Proxima pergunta</button>
+
+  <script type="module">
+    import { readDataFile } from "./utils/file.js";
+    import { syntaxJS } from "./utils/syntax.js";
+    import { saveCaretPosition, restoreCaretPosition } from "./utils/editableCursor.js";
+
+    const questions = [];
+
+    Object.defineProperty(Object.prototype, "compareTo", {
+      value: function (second) {
+        return JSON.stringify(this) === JSON.stringify(second);
+      }
+    });
+
+    codeInput.oninput = ({ target }) => {
+      const caretPos = saveCaretPosition(target);
+      target.innerHTML = syntaxJS(target.innerText);
+      restoreCaretPosition(target, caretPos);
+    }
+
+    codeInput.addEventListener("keydown", function (e) {
+      if (e.key === "Tab") {
+        e.preventDefault();
+
+        // Pega a seleção atual
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+
+        // Cria um nó de texto com 4 espaços
+        const tabNode = document.createTextNode("    ");
+
+        // Insere no local do cursor
+        range.insertNode(tabNode);
+
+        // Move o cursor após os 4 espaços
+        range.setStartAfter(tabNode);
+        range.setEndAfter(tabNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    });
+
+    let currentQuestion = 0;
+    const accept = [];
+
+    function fillFields(id, name, out, expect, time, status) {
+      return `
+        <td>${id}</td>
+        <td>${name}</td>
+        <td>${out}</td>
+        <td>${expect}</td>
+        <td>${time}ms</td>
+        <td>${status}</td>
+      `;
+    }
+    // const fib = num => num < 2 ? num : fib(num - 1) + num;
+    // function soma(...arr) {return arr.reduce((acc, curr) => acc + curr, 0);}
+    const runCodeAndUpdate = async (test, index) => new Promise(async (res, rej) => {
+      const runCodeTR = document.createElement("tr");
+      testRunning.append(runCodeTR);
+      const ID = index + 1;
+      // runCodeTR.innerHTML = fillFields(ID, test.name, '', '⏳ Esperando');
+      runCodeTR.innerHTML = fillFields(ID, test.name, '', '', 0, '🔄 Rodando ...');
+      try {
+        const initTime = performance.now();
+        await eval(`
+          (async () => {
+            ${codeInput.innerText}
+            return await ${test.code};
+          })()
+        `).then(codeOut => {
+          const result = typeof codeOut === "object"
+            ? test.expected.compareTo(codeOut)
+            : codeOut === test.expected;
+
+          const resultTime = performance.now() - initTime;
+          accept.push([+result, resultTime]);
+          const humanizeTime = resultTime.toFixed(3);
+
+          runCodeTR.innerHTML = result
+            ? fillFields(ID, test.name, codeOut, test.expected, humanizeTime, '🟢 Sucesso')
+            : fillFields(ID, test.name, codeOut, test.expected, humanizeTime, '🔴 Falha');
+
+          rej(resultTime);
+        });
+      } catch (error) {
+        console.info(error);
+        runCodeTR.innerHTML = fillFields(ID, test.name, 'Falha', test.expected, 999, '🚨 Erro no código');
+        rej(error);
+      }
+    });
+
+    function showCurrentAsk() {
+      const current = questions[currentQuestion];
+      question.innerHTML = current.question;
+      codeInput.innerHTML = "";
+      testRunning.innerHTML = "";
+    }
+
+    const checkNextAndShow = (question, score) => {
+      const current = questions[currentQuestion];
+      const lastQuestion = currentQuestion + 1 >= questions.length;
+      if (question.minScore <= score && !lastQuestion) {
+        goNextQuestion.style.display = 'block';
+      }
+    };
+
+    const nextQuestion = () => {
+      currentQuestion++;
+      showCurrentAsk();
+      goNextQuestion.style.display = 'none';
+      if (currentQuestion + 1 >= questions.length) {
+        alert("Ultima pergunta");
+      }
+    };
+
+    async function checkQuestion() {
+      testRunning.innerHTML = "";
+      accept.splice(0, 100);
+      const current = questions[currentQuestion];
+      Promise.all(current.tests.map(runCodeAndUpdate))
+        .finally(() => {
+          const total = accept.reduce((acc, curr) => acc + curr[0], 0);
+          const scoreResult = total / current.tests.length * 100;
+          score.innerHTML = `Pontuação: ${scoreResult}`;
+          checkNextAndShow(current, scoreResult);
+        });
+    }
+
+    checkCode.onclick = checkQuestion;
+    goNextQuestion.onclick = nextQuestion;
+
+
+    inputFile.onchange = async function (ev) {
+      const textOrError = await readDataFile(ev.target.files);
+      try {
+        questions.splice(0, 100);
+        questions.push(...JSON.parse(textOrError));
+        showCurrentAsk();
+      } catch (error) {
+        console.info(error);
+        alert("Falha na leitura dos dados!");
+      }
+    }
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+body {
+  min-height: 100vh;
+  color: #fcfcfc;
+}
+body {
+  background: rgb(38 38 38);
+}
+table {
+  text-align: left;
+}
+#goNextQuestion {
+  display: none;
+}
+
+.is-full {
+  width: 100%;
+}
+h1 {
+  color: #e9ec9c;
+}
+b {
+  color: brown;
+}

@@ -1,0 +1,235 @@
+[
+  {
+    "question": "<p><b>Crie uma função com o nome <u>menu</u></b> que <i>retorne uma string</i> com o seguinte conteúdo formatado:</p><pre><code>1 - Ver Saldo | 2 - Transferir | 3 - Calcular Juros | 4 - Sair</code></pre><p style='color: darkred;'><b>⚠️ Importante:</b> O retorno deve ser exatamente igual ao exemplo acima. Não retorne <code>print</code>, retorne uma <code>string</code>.</p>",
+    "minScore": 75,
+    "tests": [
+      {
+        "name": "Menu correto",
+        "code": "menu()",
+        "expected": "1 - Ver Saldo | 2 - Transferir | 3 - Calcular Juros | 4 - Sair"
+      }
+    ]
+  },
+  {
+    "question": "<p><b>Crie uma função com o nome <u>escolherSessao</u></b> que receba um número inteiro entre <b>1</b> e <b>4</b> e retorne o nome da seção correspondente:</p><ul><li>1 → 'Saldo'</li><li>2 → 'Transferência'</li><li>3 → 'Juros'</li><li>4 → 'Sair'</li></ul><p><b>🚨 Dica:</b> Trate entradas inválidas retornando <code>'Opção inválida'</code>.</p>",
+    "minScore": 75,
+    "tests": [
+      {
+        "name": "Sessão válida 1",
+        "code": "escolherSessao(1)",
+        "expected": "Saldo"
+      },
+      {
+        "name": "Sessão válida 4",
+        "code": "escolherSessao(4)",
+        "expected": "Sair"
+      },
+      {
+        "name": "Sessão inválida 5",
+        "code": "escolherSessao(5)",
+        "expected": "Opção inválida"
+      },
+      {
+        "name": "Sessão negativa",
+        "code": "escolherSessao(-1)",
+        "expected": "Opção inválida"
+      },
+      {
+        "name": "Sessão string",
+        "code": "escolherSessao('2')",
+        "expected": "Opção inválida"
+      }
+    ]
+  },
+  {
+    "question": "<p><b>Crie uma função com o nome <u>verSaldo</u></b> que receba um valor <i>numérico</i> e retorne a mensagem:</p><pre><code>Seu saldo é: R$<valor></code></pre><p><b>💡 Exemplo:</b> Se o saldo for 200, retorne <code>Seu saldo é: R$200</code>.</p><p style='color: darkred;'><b>⚠️ Atenção:</b> Se o valor for negativo ou não numérico, retorne <code>'Saldo inválido'</code>.</p>",
+    "minScore": 75,
+    "tests": [
+      {
+        "name": "Saldo válido",
+        "code": "verSaldo(200)",
+        "expected": "Seu saldo é: R$200"
+      },
+      {
+        "name": "Saldo zero",
+        "code": "verSaldo(0)",
+        "expected": "Seu saldo é: R$0"
+      },
+      {
+        "name": "Saldo negativo",
+        "code": "verSaldo(-10)",
+        "expected": "Saldo inválido"
+      },
+      {
+        "name": "Saldo texto",
+        "code": "verSaldo('cem')",
+        "expected": "Saldo inválido"
+      }
+    ]
+  },
+  {
+    "question": "<p><b>Crie uma função com o nome <u>transferir</u></b> que receba dois valores:</p><ul><li><b>saldo</b></li><li><b>valorTransferencia</b></li></ul><p>A função deve:</p><ul><li>Retornar o novo saldo se for possível transferir</li><li>Retornar <code>'Saldo insuficiente'</code> se o valor for maior que o saldo</li><li>Retornar <code>'Valores inválidos'</code> se qualquer valor for negativo ou não numérico</li></ul>",
+    "minScore": 75,
+    "tests": [
+      {
+        "name": "Transferência válida",
+        "code": "transferir(100, 30)",
+        "expected": 70
+      },
+      {
+        "name": "Transferência total",
+        "code": "transferir(50, 50)",
+        "expected": 0
+      },
+      {
+        "name": "Transferência impossível",
+        "code": "transferir(40, 100)",
+        "expected": "Saldo insuficiente"
+      },
+      {
+        "name": "Transferência com saldo negativo",
+        "code": "transferir(-50, 10)",
+        "expected": "Valores inválidos"
+      },
+      {
+        "name": "Transferência com string",
+        "code": "transferir('100', 30)",
+        "expected": "Valores inválidos"
+      }
+    ]
+  },
+  {
+    "question": "<p><b>Crie uma função com o nome <u>calcularJuros</u></b> que receba dois números:</p><ul><li><b>valor</b>: valor base</li><li><b>taxa</b>: percentual de juros</li></ul><p>Ela deve retornar o valor final com juros simples, calculado como:</p><pre><code>valor * (1 + taxa / 100)</code></pre><p><b>❗ Exemplo:</b> <code>calcularJuros(200, 10)</code> retorna <code>220</code>.</p><p><b>⚠️ Valide:</b> Ambos os valores devem ser positivos. Se inválidos, retorne <code>'Entrada inválida'</code>.</p>",
+    "minScore": 75,
+    "tests": [
+      {
+        "name": "Juros normal",
+        "code": "calcularJuros(200, 10)",
+        "expected": 220
+      },
+      {
+        "name": "Juros zero",
+        "code": "calcularJuros(100, 0)",
+        "expected": 100
+      },
+      {
+        "name": "Juros com decimal",
+        "code": "calcularJuros(200, 5.5)",
+        "expected": 211
+      },
+      {
+        "name": "Juros com valor negativo",
+        "code": "calcularJuros(-200, 10)",
+        "expected": "Entrada inválida"
+      },
+      {
+        "name": "Juros com string",
+        "code": "calcularJuros(100, 'dez')",
+        "expected": "Entrada inválida"
+      }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>aplicarTarifa</u></b> que subtrai uma taxa fixa do saldo e retorna o valor atualizado.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Aplicando tarifa", "code": "aplicarTarifa(100, 5)", "expected": 95 }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>formatarDinheiro</u></b> que recebe um número e retorna no formato: <code>'R$100.00'</code></p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Formato com ponto", "code": "formatarDinheiro(100)", "expected": "R$100.00" }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>isSaldoPositivo</u></b> que retorna <code>True</code> se o saldo for maior que zero.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Saldo positivo", "code": "isSaldoPositivo(50)", "expected": true },
+      { "name": "Saldo zerado", "code": "isSaldoPositivo(0)", "expected": false }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>calcularMedia</u></b> que recebe uma lista de números e retorna a média. Se a lista for vazia, retorne 0.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Média simples", "code": "calcularMedia([10, 20, 30])", "expected": 20 },
+      { "name": "Lista vazia", "code": "calcularMedia([])", "expected": 0 }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>filtrarTransacoes</u></b> que recebe uma lista e retorna apenas os valores positivos.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Com positivos e negativos", "code": "filtrarTransacoes([100, -20, 50])", "expected": [100, 50] }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>totalTransacoes</u></b> que soma apenas números válidos da lista (ignora strings e None).</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Com elementos inválidos", "code": "totalTransacoes([100, 'erro', None, 50])", "expected": 150 }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>buscarMaior</u></b> que retorna o maior número de uma lista ou <code>None</code> se estiver vazia.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Maior número", "code": "buscarMaior([10, 99, 35])", "expected": 99 },
+      { "name": "Lista vazia", "code": "buscarMaior([])", "expected": null }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>verificarTransferencia</u></b> que retorna <code>'Transferido R$valor para nome'</code> ou <code>'Erro na transferência'</code>.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Transferência válida", "code": "verificarTransferencia(100, 50, 'João')", "expected": "Transferido R$50 para João" },
+      { "name": "Saldo insuficiente", "code": "verificarTransferencia(10, 50, 'Ana')", "expected": "Erro na transferência" }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>categorizarSaldo</u></b> que classifica o saldo:</p><ul><li>'Negativo'</li><li>'Baixo'</li><li>'Ok'</li><li>'Alto'</li></ul>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Saldo negativo", "code": "categorizarSaldo(-1)", "expected": "Negativo" },
+      { "name": "Saldo alto", "code": "categorizarSaldo(1500)", "expected": "Alto" }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>criarConta</u></b> que recebe nome e saldo inicial e retorna um dicionário com essas informações.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Criando conta", "code": "criarConta('Lucas', 500)", "expected": {"nome": "Lucas", "saldo": 500} }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>depositar</u></b> que adiciona valor ao saldo da conta (dicionário).</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Depósito simples", "code": "depositar({'nome': 'Lucas', 'saldo': 100}, 50)", "expected": {"nome": "Lucas", "saldo": 150} }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>sacar</u></b> que reduz o saldo da conta, se houver saldo suficiente. Caso contrário, retorne <code>'Saldo insuficiente'</code>.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Saque válido", "code": "sacar({'nome': 'Lucas', 'saldo': 100}, 30)", "expected": {"nome": "Lucas", "saldo": 70} }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>gerarExtrato</u></b> que recebe uma lista de transações e retorna uma string formatada como extrato:</p><pre>1. +100\n2. -50</pre>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Extrato básico", "code": "gerarExtrato([100, -50, 200])", "expected": "1. +100\n2. -50\n3. +200" }
+    ]
+  },
+  {
+    "question": "<p><b>Crie a função <u>validarConta</u></b> que verifica se um dicionário tem as chaves 'nome' e 'saldo' com tipos válidos.</p>",
+    "minScore": 75,
+    "tests": [
+      { "name": "Conta válida", "code": "validarConta({'nome': 'Ana', 'saldo': 300})", "expected": true }
+    ]
+  }
+]
